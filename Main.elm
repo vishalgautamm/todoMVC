@@ -1,6 +1,5 @@
 module Main exposing (..)
 
-import Models.Model as Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (on, keyCode)
@@ -8,6 +7,39 @@ import Json.Decode as Json
 
 
 -- MODEL
+-- We have a todo
+
+
+type alias Todo =
+    { title : String
+    , completed : Bool
+    , editing : Bool
+    }
+
+
+
+-- Filter state for the application
+
+
+type FilterState
+    = All
+    | Active
+    | Completed
+
+
+
+-- Entire Application state's model
+
+
+type alias Model =
+    { todos : List Todo
+    , todo : Todo
+    , filter : FilterState
+    }
+
+
+
+-- Types of messages that can occur
 
 
 initialModel : Model
@@ -29,6 +61,13 @@ initialModel =
 
 
 -- UPDATE
+
+
+type Msg
+    = Add Todo
+    | Delete Todo
+    | Complete Todo
+    | Filter FilterState
 
 
 update : Msg -> Model -> Model
@@ -342,7 +381,7 @@ styles =
     }
 
     .todo-list li.completed label {
-      color: #1F8278;
+      color: #d9d9d9;
       text-decoration: line-through;
     }
 
