@@ -1,0 +1,23 @@
+var _user$project$Models_Model$Todo = F3(
+	function (a, b, c) {
+		return {title: a, completed: b, editing: c};
+	});
+var _user$project$Models_Model$Model = F3(
+	function (a, b, c) {
+		return {todos: a, todo: b, filter: c};
+	});
+var _user$project$Models_Model$Completed = {ctor: 'Completed'};
+var _user$project$Models_Model$Active = {ctor: 'Active'};
+var _user$project$Models_Model$All = {ctor: 'All'};
+var _user$project$Models_Model$Filter = function (a) {
+	return {ctor: 'Filter', _0: a};
+};
+var _user$project$Models_Model$Complete = function (a) {
+	return {ctor: 'Complete', _0: a};
+};
+var _user$project$Models_Model$Delete = function (a) {
+	return {ctor: 'Delete', _0: a};
+};
+var _user$project$Models_Model$Add = function (a) {
+	return {ctor: 'Add', _0: a};
+};
