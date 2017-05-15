@@ -2,12 +2,23 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (on, keyCode)
+import Html.Events exposing (on, keyCode, onInput)
 import Json.Decode as Json
 
 
+-- MAIN PROGRAM
+
+
+main =
+    Html.beginnerProgram
+        { model = initialModel
+        , view = view
+        , update = update
+        }
+
+
+
 -- MODEL
--- We have a todo
 
 
 type alias Todo =
@@ -17,18 +28,10 @@ type alias Todo =
     }
 
 
-
--- Filter state for the application
-
-
 type FilterState
     = All
     | Active
     | Completed
-
-
-
--- Entire Application state's model
 
 
 type alias Model =
@@ -38,23 +41,23 @@ type alias Model =
     }
 
 
-
--- Types of messages that can occur
+newTodo : Todo
+newTodo =
+    { title = ""
+    , completed = False
+    , editing = False
+    }
 
 
 initialModel : Model
 initialModel =
     { todos =
         [ { title = "Learn elm programming"
-          , completed = True
+          , completed = False
           , editing = False
           }
         ]
-    , todo =
-        { title = ""
-        , completed = False
-        , editing = False
-        }
+    , todo = newTodo
     , filter = All
     }
 
@@ -64,26 +67,39 @@ initialModel =
 
 
 type Msg
-    = Add Todo
+    = Add
     | Delete Todo
     | Complete Todo
+    | UpdatedField String
     | Filter FilterState
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        Add todo ->
-            { model | todos = todo :: model.todos }
+        Add ->
+            { model
+                | todos = model.todo :: model.todos
+                , todo = newTodo
+            }
 
         Delete todo ->
             model
 
-        -- { model | List.filter (\todo -> model.todo \= todo) model.todos}
         Complete todo ->
             model
 
-        Filter todo ->
+        UpdatedField str ->
+            let
+                todo =
+                    model.todo
+
+                updatedTodo =
+                    { todo | title = str }
+            in
+                { model | todo = updatedTodo }
+
+        Filter filterState ->
             model
 
 
@@ -134,7 +150,8 @@ view model =
                     , placeholder "What needs to be done"
                     , value model.todo.title
                     , autofocus True
-                    , onEnter (Add mockTodo)
+                    , onEnter Add
+                    , onInput UpdatedField
                     ]
                     []
                 ]
@@ -144,18 +161,6 @@ view model =
                 ]
             ]
         ]
-
-
-
--- MAIN PROGRAM
-
-
-main =
-    Html.beginnerProgram
-        { model = initialModel
-        , view = view
-        , update = update
-        }
 
 
 

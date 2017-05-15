@@ -76,6 +76,7 @@ var _user$project$Main$onEnter = function (msg) {
 		A2(_elm_lang$core$Json_Decode$andThen, isEnter, _elm_lang$html$Html_Events$keyCode));
 };
 var _user$project$Main$mockTodo = {title: 'Sample todo', completed: false, editing: false};
+var _user$project$Main$newTodo = {title: '', completed: false, editing: false};
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
@@ -84,12 +85,21 @@ var _user$project$Main$update = F2(
 				return _elm_lang$core$Native_Utils.update(
 					model,
 					{
-						todos: {ctor: '::', _0: _p0._0, _1: model.todos}
+						todos: {ctor: '::', _0: model.todo, _1: model.todos},
+						todo: _user$project$Main$newTodo
 					});
 			case 'Delete':
 				return model;
 			case 'Complete':
 				return model;
+			case 'UpdatedField':
+				var todo = model.todo;
+				var updatedTodo = _elm_lang$core$Native_Utils.update(
+					todo,
+					{title: _p0._0});
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{todo: updatedTodo});
 			default:
 				return model;
 		}
@@ -108,14 +118,17 @@ var _user$project$Main$All = {ctor: 'All'};
 var _user$project$Main$initialModel = {
 	todos: {
 		ctor: '::',
-		_0: {title: 'Learn elm programming', completed: true, editing: false},
+		_0: {title: 'Learn elm programming', completed: false, editing: false},
 		_1: {ctor: '[]'}
 	},
-	todo: {title: '', completed: false, editing: false},
+	todo: _user$project$Main$newTodo,
 	filter: _user$project$Main$All
 };
 var _user$project$Main$Filter = function (a) {
 	return {ctor: 'Filter', _0: a};
+};
+var _user$project$Main$UpdatedField = function (a) {
+	return {ctor: 'UpdatedField', _0: a};
 };
 var _user$project$Main$Complete = function (a) {
 	return {ctor: 'Complete', _0: a};
@@ -123,9 +136,7 @@ var _user$project$Main$Complete = function (a) {
 var _user$project$Main$Delete = function (a) {
 	return {ctor: 'Delete', _0: a};
 };
-var _user$project$Main$Add = function (a) {
-	return {ctor: 'Add', _0: a};
-};
+var _user$project$Main$Add = {ctor: 'Add'};
 var _user$project$Main$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -191,9 +202,12 @@ var _user$project$Main$view = function (model) {
 														_0: _elm_lang$html$Html_Attributes$autofocus(true),
 														_1: {
 															ctor: '::',
-															_0: _user$project$Main$onEnter(
-																_user$project$Main$Add(_user$project$Main$mockTodo)),
-															_1: {ctor: '[]'}
+															_0: _user$project$Main$onEnter(_user$project$Main$Add),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdatedField),
+																_1: {ctor: '[]'}
+															}
 														}
 													}
 												}
