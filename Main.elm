@@ -91,7 +91,7 @@ update msg model =
             }
 
         Delete todo ->
-            model
+            { model | todos = List.filter (\targetTodo -> todo.identifier /= targetTodo.identifier) model.todos }
 
         Complete todo ->
             let
@@ -168,7 +168,11 @@ todoView todo =
                     ]
                     []
                 , label [] [ text todo.title ]
-                , button [ class "destroy" ] []
+                , button
+                    [ class "destroy"
+                    , onClick (Delete todo)
+                    ]
+                    []
                 ]
             ]
 

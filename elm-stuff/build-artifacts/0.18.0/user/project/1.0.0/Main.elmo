@@ -44,7 +44,16 @@ var _user$project$Main$update = F2(
 						nextIdentifier: model.nextIdentifier + 1
 					});
 			case 'Delete':
-				return model;
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						todos: A2(
+							_elm_lang$core$List$filter,
+							function (targetTodo) {
+								return !_elm_lang$core$Native_Utils.eq(_p2._0.identifier, targetTodo.identifier);
+							},
+							model.todos)
+					});
 			case 'Complete':
 				var _p3 = _p2._0;
 				var updatedTodo = function (thisTodo) {
@@ -159,6 +168,9 @@ var _user$project$Main$Uncomplete = function (a) {
 var _user$project$Main$Complete = function (a) {
 	return {ctor: 'Complete', _0: a};
 };
+var _user$project$Main$Delete = function (a) {
+	return {ctor: 'Delete', _0: a};
+};
 var _user$project$Main$todoView = function (todo) {
 	var handleComplete = function () {
 		var _p5 = todo.completed;
@@ -232,7 +244,12 @@ var _user$project$Main$todoView = function (todo) {
 								{
 									ctor: '::',
 									_0: _elm_lang$html$Html_Attributes$class('destroy'),
-									_1: {ctor: '[]'}
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(
+											_user$project$Main$Delete(todo)),
+										_1: {ctor: '[]'}
+									}
 								},
 								{ctor: '[]'}),
 							_1: {ctor: '[]'}
@@ -241,9 +258,6 @@ var _user$project$Main$todoView = function (todo) {
 				}),
 			_1: {ctor: '[]'}
 		});
-};
-var _user$project$Main$Delete = function (a) {
-	return {ctor: 'Delete', _0: a};
 };
 var _user$project$Main$Add = {ctor: 'Add'};
 var _user$project$Main$view = function (model) {
