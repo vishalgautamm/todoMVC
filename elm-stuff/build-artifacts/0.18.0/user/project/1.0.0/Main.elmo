@@ -86,10 +86,21 @@ var _user$project$Main$update = F2(
 				return _elm_lang$core$Native_Utils.update(
 					model,
 					{todo: updatedTodo});
-			default:
+			case 'Filter':
 				return _elm_lang$core$Native_Utils.update(
 					model,
 					{filter: _p2._0});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						todos: A2(
+							_elm_lang$core$List$filter,
+							function (todo) {
+								return _elm_lang$core$Native_Utils.eq(todo.completed, false);
+							},
+							model.todos)
+					});
 		}
 	});
 var _user$project$Main$Todo = F4(
@@ -115,6 +126,7 @@ var _user$project$Main$initialModel = {
 	filter: _user$project$Main$All,
 	nextIdentifier: 3
 };
+var _user$project$Main$Clear = {ctor: 'Clear'};
 var _user$project$Main$Filter = function (a) {
 	return {ctor: 'Filter', _0: a};
 };
@@ -435,7 +447,11 @@ var _user$project$Main$view = function (model) {
 													{
 														ctor: '::',
 														_0: _elm_lang$html$Html_Attributes$class('clear-completed'),
-														_1: {ctor: '[]'}
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$Clear),
+															_1: {ctor: '[]'}
+														}
 													},
 													{
 														ctor: '::',
